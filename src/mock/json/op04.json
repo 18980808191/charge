@@ -1,0 +1,18 @@
+{
+    "data": [
+        {
+            "month": "201905",
+            "income": "2976"
+        },
+        {
+            "month": "201906",
+            "income": "6576"
+        },
+        {
+            "month": "201907",
+            "income": "9976"
+        }
+    ],
+    "message": "this is a message",
+    "success": true
+}

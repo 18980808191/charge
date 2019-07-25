@@ -1,28 +1,126 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <van-nav-bar
+      ref="navbar"
+      fixed
+      :title="title"
+      :left-text="menutext"
+      left-arrow
+      @click-left="onClickLeft"
+    >
+      <div slot="right">
+        <van-icon name="user-o" />{{userName}}
+      </div>
+    </van-nav-bar>
+    <div
+      ref="cpv"
+      :style="{height:ht+'px',paddingTop:mg+'px',paddingBottom:mt+'px',overflow:'auto'}"
+    >
+      <router-view ref="cp" />
+    </div>
+    <van-tabbar
+      v-show="showflag"
+      ref="bottombar"
+      v-model="active"
+    >
+      <van-tabbar-item
+        name="overAll"
+        icon="eye"
+        to="overAll"
+      >进度</van-tabbar-item>
+      <van-tabbar-item
+        name="localLan"
+        icon="location"
+        to="localLan"
+      >收入</van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import { mapState, mapActions } from "vuex";
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      active: "overall",
+      menutext: "关闭",
+      ht: 200,
+      mg: 46,
+      mt: 50,
+      showflag: false
+    };
+  },
+  mounted() {
+    var h = document.documentElement.clientHeight || document.body.clientHeight;
+    this.mg = this.$refs.navbar.offsetHeight;
+    this.mt = this.$refs.bottombar.$el.offsetHeight;
+    this.ht = h - this.mg - this.mt;
+  },
+  computed: {
+    ...mapState({
+      title: "title", // 第一种写法
+      ck: "ck",
+      userId:"userId",
+      userName: "userName",
+      isProvincial:"isProvincial"
+      //sex: (state) => state.sex, // 第二种写法
+    })
+  },
+  methods: {
+    onClickLeft() {
+      // if (1 == this.ck) {
+      //   alert("关闭");
+      //   if(window.history.length > 1){
+      //     this.$router.go(-1);
+      //   }
+      // }
+      if (2 == this.ck && this.isProvincial) {
+        this.$refs.cp.redirectTolocal([0, 0, "全省"], 1);
+      }else{
+         alert("关闭");
+      }
+    },
+    watchroute(to,from) {
+      if(!to.name){
+        this.$router.push("/login");
+      }
+      this.$refs.cpv.scrollTo(0, 0);
+      if (to.path == "/localLan") {
+        this.showflag = true;
+        this.active = "localLan";
+      } else if (to.path == "/overAll") {
+        this.showflag = true;
+        this.active = "overAll";
+      } else if (to.path == "/login") {
+        this.showflag = false;
+      }
+    }
+  },
+  created() {
+    if (this.userId == "") {
+      this.$router.push("/login");
+    }
+  },
+  watch: {
+    $route: "watchroute",
+    ck: {
+      handler(newValue, oldValue) {
+        if (newValue == 2 && this.isProvincial) {
+          this.menutext = "返回";
+        } else {
+          this.menutext = "关闭";
+        }
+      }
+    }
   }
-}
+};
 </script>
-
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+html,
+body {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  height: 100%;
 }
 </style>

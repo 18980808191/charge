@@ -1,0 +1,34 @@
+{
+    "data": [
+        {
+            "item": "移动语音",
+            "value": "1200"
+        },
+        {
+            "item": "移动数据",
+            "value": "2200"
+        },
+        {
+            "item": "移动短信",
+            "value": "3200"
+        },
+        {
+            "item": "移动增值",
+            "value": "2400"
+        },
+        {
+            "item": "固网语音",
+            "value": "2030"
+        },
+        {
+            "item": "固网数据",
+            "value": "2080"
+        },
+        {
+            "item": "固网语音",
+            "value": "2090"
+        }
+    ],
+    "message": "this is a message",
+    "success": true
+}

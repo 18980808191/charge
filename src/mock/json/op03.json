@@ -1,0 +1,111 @@
+{
+    "data": [
+        {
+            "regionId": "1",
+            "income": "9976",
+            "regionName": "德阳"
+        },
+        {
+            "regionId": "2",
+            "income": "9190",
+            "regionName": "成都"
+        },
+        {
+            "regionId": "3",
+            "income": "9120",
+            "regionName": "眉山"
+        },
+        {
+            "regionId": "4",
+            "income": "5453",
+            "regionName": "资阳"
+        },
+        {
+            "regionId": "5",
+            "income": "6565",
+            "regionName": "阿坝"
+        },
+        {
+            "regionId": "6",
+            "income": "7544",
+            "regionName": "自贡"
+        },
+        {
+            "regionId": "7",
+            "income": "6565",
+            "regionName": "南充"
+        },
+        {
+            "regionId": "8",
+            "income": "3435",
+            "regionName": "内江"
+        },
+        {
+            "regionId": "9",
+            "income": "6765",
+            "regionName": "达州"
+        },
+        {
+            "regionId": "10",
+            "income": "6765",
+            "regionName": "绵阳"
+        },
+        {
+            "regionId": "11",
+            "income": "8987",
+            "regionName": "德阳1"
+        },
+        {
+            "regionId": "12",
+            "income": "6545",
+            "regionName": "成都1"
+        },
+        {
+            "regionId": "13",
+            "income": "5665",
+            "regionName": "眉山1"
+        },
+        {
+            "regionId": "14",
+            "income": "2323",
+            "regionName": "资阳1"
+        },
+        {
+            "regionId": "15",
+            "income": "1112",
+            "regionName": "阿坝1"
+        },
+        {
+            "regionId": "16",
+            "income": "2232",
+            "regionName": "自贡1"
+        },
+        {
+            "regionId": "17",
+            "income": "1123",
+            "regionName": "南充1"
+        },
+        {
+            "regionId": "18",
+            "income": "2434",
+            "regionName": "内江1"
+        },
+        {
+            "regionId": "19",
+            "income": "2234",
+            "regionName": "达州1"
+        },
+        {
+            "regionId": "20",
+            "income": "3345",
+            "regionName": "绵阳1"
+        },
+        {
+            "regionId": "21",
+            "income": "4454",
+            "regionName": "绵阳1"
+        }
+    ],
+    "message": "this is a message",
+    "success": true
+}

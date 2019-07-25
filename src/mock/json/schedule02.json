@@ -1,0 +1,111 @@
+{
+    "data": [
+        {
+            "regionId": "1",
+            "schedule": "20",
+            "regionName": "德阳"
+        },
+        {
+            "regionId": "2",
+            "schedule": "10",
+            "regionName": "成都"
+        },
+        {
+            "regionId": "3",
+            "schedule": "90",
+            "regionName": "眉山"
+        },
+        {
+            "regionId": "4",
+            "schedule": "80",
+            "regionName": "资阳"
+        },
+        {
+            "regionId": "5",
+            "schedule": "70",
+            "regionName": "阿坝"
+        },
+        {
+            "regionId": "6",
+            "schedule": "60",
+            "regionName": "自贡"
+        },
+        {
+            "regionId": "7",
+            "schedule": "50",
+            "regionName": "南充"
+        },
+        {
+            "regionId": "8",
+            "schedule": "40",
+            "regionName": "内江"
+        },
+        {
+            "regionId": "9",
+            "schedule": "30",
+            "regionName": "达州"
+        },
+        {
+            "regionId": "10",
+            "schedule": "20",
+            "regionName": "绵阳"
+        },
+        {
+            "regionId": "11",
+            "schedule": "20",
+            "regionName": "德阳1"
+        },
+        {
+            "regionId": "12",
+            "schedule": "10",
+            "regionName": "成都1"
+        },
+        {
+            "regionId": "13",
+            "schedule": "90",
+            "regionName": "眉山1"
+        },
+        {
+            "regionId": "14",
+            "schedule": "80",
+            "regionName": "资阳1"
+        },
+        {
+            "regionId": "15",
+            "schedule": "70",
+            "regionName": "阿坝1"
+        },
+        {
+            "regionId": "16",
+            "schedule": "60",
+            "regionName": "自贡1"
+        },
+        {
+            "regionId": "17",
+            "schedule": "50",
+            "regionName": "南充1"
+        },
+        {
+            "regionId": "18",
+            "schedule": "40",
+            "regionName": "内江1"
+        },
+        {
+            "regionId": "19",
+            "schedule": "30",
+            "regionName": "达州1"
+        },
+        {
+            "regionId": "20",
+            "schedule": "20",
+            "regionName": "绵阳1"
+        },
+        {
+            "regionId": "21",
+            "schedule": "20",
+            "regionName": "绵阳1"
+        }
+    ],
+    "message": "this is a message",
+    "success": true
+}
