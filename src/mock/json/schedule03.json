@@ -1,0 +1,32 @@
+{
+    "data": [
+        {
+            "regionId": 2323,
+            "regionName": "资阳",
+            "flowName": "出账1",
+            "flowValue": 98
+        },{
+            "regionId": 2323,
+            "regionName": "资阳",
+            "flowName": "出账2",
+            "flowValue": 98
+        },{
+            "regionId": 2323,
+            "regionName": "资阳",
+            "flowName": "出账3",
+            "flowValue": 33
+        },{
+            "regionId": 2323,
+            "regionName": "资阳",
+            "flowName": "出账4",
+            "flowValue": 44
+        },{
+            "regionId": 2323,
+            "regionName": "资阳",
+            "flowName": "出账5",
+            "flowValue": 66
+        }
+    ],
+    "message": "this is a message",
+    "success": true
+}

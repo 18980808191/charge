@@ -1,7 +1,5 @@
 {
-    "data": {
-        "finishdata": "90"
-    },
+    "data": "90",
     "message": "this is a message",
     "success": true
 }

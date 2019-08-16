@@ -1,0 +1,25 @@
+const areacode = [
+    { "lan": "831", "name": "宜宾市", "regionId": "511500" },
+    { "lan": "825", "name": "遂宁市", "regionId": "510900" },
+    { "lan": "833", "name": "乐山市", "regionId": "511100" },
+    { "lan": "837", "name": "阿坝州", "regionId": "513200" },
+    { "lan": "838", "name": "德阳市", "regionId": "510600" },
+    { "lan": "818", "name": "达州市", "regionId": "511700" },
+    { "lan": "835", "name": "雅安市", "regionId": "511800" },
+    { "lan": "827", "name": "巴中市", "regionId": "511900" },
+    { "lan": "0100", "name": "省公司", "regionId": "510000" },
+    { "lan": "280", "name": "成都市", "regionId": "510100" },
+    { "lan": "812", "name": "攀枝花", "regionId": "510400" },
+    { "lan": "826", "name": "广安市", "regionId": "511600" },
+    { "lan": "816", "name": "绵阳市", "regionId": "510700" },
+    { "lan": "830", "name": "泸州市", "regionId": "510500" },
+    { "lan": "9833", "name": "眉山市", "regionId": "511400" },
+    { "lan": "836", "name": "甘孜州", "regionId": "513300" },
+    { "lan": "832", "name": "资阳市", "regionId": "512000" },
+    { "lan": "834", "name": "凉山州", "regionId": "513400" },
+    { "lan": "813", "name": "自贡市", "regionId": "510300" },
+    { "lan": "817", "name": "南充市", "regionId": "511300" },
+    { "lan": "839", "name": "广元市", "regionId": "510800" },
+    { "lan": "9832", "name": "内江市", "regionId": "511000" }
+]
+export default areacode

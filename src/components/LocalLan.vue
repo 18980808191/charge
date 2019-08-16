@@ -1,45 +1,18 @@
 <template>
   <div>
-    <van-notice-bar
-      :scrollable="false"
-      color="#1989fa"
-      background="#ecf9ff"
-      left-icon="volume-o"
-    >{{curmonth}}月总收入：{{total}}万元</van-notice-bar>
+    <van-notice-bar :scrollable="false" color="#1989fa" background="#ecf9ff" left-icon="volume-o">{{curmonth}}月总收入：{{total}}万元</van-notice-bar>
 
-    <div
-      id="myChart001"
-      :style="{width: '100%', height: '300px'}"
-    ></div>
+    <div id="myChart001" :style="{width: '100%', height: '300px'}"></div>
     <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 15px' }"></van-divider>
-    <div
-      v-show="localflag"
-      :style="{marginTop:'-30px'}"
-    >
-      <van-tabs
-        type="card"
-        v-model="optab"
-        color="#22A5F1"
-        @change="tabchange"
-      >
-        <van-tab
-          v-for="item in optablist"
-          :key="item.value"
-          :name="item.value"
-          :title="item.text"
-        ></van-tab>
+    <div v-show="localflag" :style="{marginTop:'-30px'}">
+      <van-tabs type="card" v-model="optab" color="#22A5F1" @change="tabchange">
+        <van-tab v-for="item in optablist" :key="item.value" :name="item.value" :title="item.text"></van-tab>
       </van-tabs>
       <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 15px' }"></van-divider>
     </div>
-    <div
-      id="myChart002"
-      :style="{width: '100%', height: '300px'}"
-    ></div>
+    <div id="myChart002" :style="{width: '100%', height: '300px'}"></div>
     <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 15px' }"></van-divider>
-    <div
-      id="myChart003"
-      :style="{width: '100%', height:heightchart3+'px'}"
-    ></div>
+    <div id="myChart003" :style="{width: '100%', height:heightchart3+'px'}"></div>
 
   </div>
 </template>
@@ -57,7 +30,7 @@ export default {
       dataop04: undefined,
       dataop05: undefined,
       dataop06: undefined,
-      failtime: 30,
+      failtime: 50,
       total: "**",
       localflag: true,
       heightchart3: 600,
@@ -69,7 +42,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userId", "regionId", "regionName","isProvincial"]),
+    ...mapState([
+      "userId",
+      "regionId",
+      "localLan",
+      "regionName",
+      "isProvincial"
+    ]),
     curmonth: function() {
       var tt = new Date();
       return tt.getMonth() + 1;
@@ -88,61 +67,79 @@ export default {
   created() {
     if (this.userId == "") {
       this.$router.push("/login");
-    }else{
-      if (this.isProvincial) {
-        this.loadpart01();
-      } else {
-        this.loadpart02();
-      }
     }
+    // else{
+    //   if (this.isProvincial) {
+    //     console.log("-----loadpart01----------------");
+    //     this.loadpart01();
+    //   } else {
+    //     this.loadpart02();
+    //   }
+    // }
   },
   methods: {
-    ...mapActions(["setTitle"]),
+    ...mapActions(["setTitle", "setLocalLan"]),
     loadpart01() {
       var _this = this;
-      this.$fly.post("/op01").then(function(response) {
-        if (response.success) {
-          _this.dataop01 = response.data;
-        }
-      });
-      this.$fly.post("/op02").then(function(response) {
-        if (response.success) {
+      this.$fly
+        .post(this.$api.incomeProvinceThreeMonth)
+        .then(function(response) {
+          if (response.status == 200) {
+            _this.dataop01 = response.data;
+          }
+        });
+      this.$fly.post(this.$api.incomeItems).then(function(response) {
+        if (response.status == 200) {
           _this.dataop02 = response.data;
         }
       });
-      this.$fly.post("/op03").then(function(response) {
-        if (response.success) {
+      this.$fly.post(this.$api.incomeRanks).then(function(response) {
+        if (response.status == 200) {
           _this.dataop03 = response.data;
         }
       });
-      this.$fly.post("/opall").then(function(response) {
-        if (response.success) {
-          _this.total = response.data.total;
-        }
-      });
+      this.$fly
+        .post(this.$api.incomeThis, { localLan: this.localLan })
+        .then(function(response) {
+          if (response.status == 200) {
+            _this.total = response.data;
+          }
+        });
     },
     loadpart02() {
       var _this = this;
-      this.$fly.post("/op04").then(function(response) {
-        if (response.success) {
-          _this.dataop04 = response.data;
-        }
-      });
-      this.$fly.post("/op05").then(function(response) {
-        if (response.success) {
-          _this.dataop05 = response.data;
-        }
-      });
-      this.$fly.post("/op06").then(function(response) {
-        if (response.success) {
-          _this.dataop06 = response.data;
-        }
-      });
-      this.$fly.post("/oplocalall").then(function(response) {
-        if (response.success) {
-          _this.total = response.data.total;
-        }
-      });
+      this.$fly
+        .post(this.$api.incomeLanTrendsThreeMonth, { localLan: this.localLan })
+        .then(function(response) {
+          if (response.status == 200) {
+            _this.dataop04 = response.data;
+          }
+        });
+      this.$fly
+        .post(this.$api.incomeDetailListTrendsMonth, {
+          localLan: this.localLan
+        })
+        .then(function(response) {
+          if (response.status == 200) {
+            _this.dataop05 = response.data;
+          }
+        });
+      this.$fly
+        .post(this.$api.incomeTeletrafficTrendsMonth, {
+          localLan: this.localLan
+        })
+        .then(function(response) {
+          if (response.status == 200) {
+            _this.dataop06 = response.data;
+          }
+        });
+      this.$fly
+        .post(this.$api.incomeThis, { localLan: this.localLan })
+        .then(function(response) {
+          if (response.status == 200) {
+            _this.total = response.data;
+          }
+        });
     },
     func(a, b, c) {
       var _this = this;
@@ -159,6 +156,7 @@ export default {
       }
     },
     drawchart001: function(ob) {
+      console.log(ob);
       let months = [];
       let items = [];
       let sdatas = [];
@@ -168,6 +166,10 @@ export default {
             months.push(aa.month);
           }
         }
+        if(!isNaN(ob[i].item)){
+          ob[i].item = this.$itemname[ob[i].item];
+        }
+       
         items.push(ob[i].item);
         let cc = [];
         for (let bb of ob[i].income) {
@@ -178,8 +180,8 @@ export default {
           type: "line",
           stack: "总量",
           data: cc,
-          lineStyle:{
-            width:3//设置线条粗细
+          lineStyle: {
+            width: 3 //设置线条粗细
           }
         });
       }
@@ -193,17 +195,17 @@ export default {
         },
         legend: {
           data: items,
-          icon:'roundRect',
+          icon: "roundRect",
           x: "left",
           orient: "vertical",
           width: 100,
-          top: 100
+          top: 60
         },
         grid: {
           top: "50px",
           left: "100px",
-          right: "4%",
-          bottom: "1%",
+          right: "30px",
+          bottom: "10px",
           containLabel: true
         },
         xAxis: {
@@ -215,7 +217,19 @@ export default {
           type: "value"
         },
         series: sdatas,
-        color:['#9933CC','#FF9933', '#FFFF00', '#339933', '#CC3333','#990066', '#333333', '#bda29a','#6e7074', '#546570', '#c4ccd3']
+        color: [
+          "#9933CC",
+          "#FF9933",
+          "#FFFF00",
+          "#339933",
+          "#CC3333",
+          "#990066",
+          "#333333",
+          "#bda29a",
+          "#6e7074",
+          "#546570",
+          "#c4ccd3"
+        ]
       };
       var myChart = this.$echarts.getInstanceByDom(
         document.getElementById("myChart001")
@@ -228,7 +242,12 @@ export default {
     },
     drawchart002: function(ob) {
       let tpob = [];
+      let items=[];
       for (let aa of ob) {
+        if(!isNaN(aa.item)){
+          aa.item = this.$itemname[aa.item];
+        }
+        items.push(aa.item);
         tpob.push({ value: aa.value, name: aa.item });
       }
       let option = {
@@ -237,33 +256,31 @@ export default {
           subtext: "（单位：万元）",
           x: "center"
         },
-        tooltip: {
-          trigger: "item",
-          formatter: "{b} :{d}%"
-        },
-        series: [
-          {
-            name: "收入",
-            type: "pie",
-            radius: "55%",
-            center: ["50%", "60%"],
-            data: tpob,
+        tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: items
+    },
+    series : [
+        {
+            name: '收入',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:tpob,
             itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              },
-              normal: {
-                label: {
-                  show: true,
-                  formatter: "{b} : {c}"
-                },
-                labelLine: { show: true }
-              }
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
             }
-          }
-        ]
+        }
+    ]
       };
       var myChart = this.$echarts.getInstanceByDom(
         document.getElementById("myChart002")
@@ -340,6 +357,7 @@ export default {
       let cc = [];
       for (let i = 0, len = ob.length; i < len; i++) {
         months.push(ob[i].month);
+       
         cc.push(ob[i].income);
       }
       let option = {
@@ -350,9 +368,9 @@ export default {
           trigger: "axis"
         },
         grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
+          left: "20px",
+          right: "20px",
+          bottom: "10px",
           containLabel: true
         },
         xAxis: {
@@ -369,8 +387,8 @@ export default {
             type: "line",
             stack: "总量",
             data: cc,
-            lineStyle:{
-              width:3//设置线条粗细
+            lineStyle: {
+              width: 3 //设置线条粗细
             }
           }
         ]
@@ -409,11 +427,14 @@ export default {
               type: "line",
               stack: "清单收入",
               data: cc,
-              lineStyle:{
-                width:3//设置线条粗细
+              lineStyle: {
+                width: 3 //设置线条粗细
               }
             });
           }
+        }
+        if(!isNaN(ob[i].item)){
+          ob[i].item = this.$itemname[ob[i].item];
         }
         itemlist.push({ text: ob[i].item, value: "'" + i + "'" });
       }
@@ -429,12 +450,12 @@ export default {
         legend: {
           data: items,
           top: "30px",
-          icon:"roundRect"
+          icon: "roundRect"
         },
         grid: {
           top: "70px",
-          right: "5%",
-          bottom: "1%",
+          right: "30px",
+          bottom: "10px",
           containLabel: true
         },
         xAxis: {
@@ -481,11 +502,14 @@ export default {
               type: "line",
               stack: "话务量",
               data: cc,
-              lineStyle:{
-                width:3//设置线条粗细
+              lineStyle: {
+                width: 3 //设置线条粗细
               }
             });
           }
+        }
+        if(!isNaN(ob[i].item)){
+          ob[i].item = this.$itemname[ob[i].item];
         }
         itemlist.push({ text: ob[i].item, value: i });
       }
@@ -502,12 +526,12 @@ export default {
         legend: {
           data: items,
           top: "30px",
-          icon:"roundRect"
+          icon: "roundRect"
         },
         grid: {
           top: "70px",
-          right: "5%",
-          bottom: "1%",
+          right: "30px",
+          bottom: "10px",
           containLabel: true
         },
         xAxis: {
@@ -532,6 +556,28 @@ export default {
     },
     redirectTolocal(data, ck) {
       this.$parent.$refs.cpv.scrollTo(0, 0);
+      this.setLocalLan({ localLan: data[0] });
+      this.total="**";
+      var myChart1 = this.$echarts.getInstanceByDom(
+        document.getElementById("myChart001")
+      );
+      if (myChart1) {
+        myChart1.clear();
+      }
+
+      var myChart2 = this.$echarts.getInstanceByDom(
+        document.getElementById("myChart002")
+      );
+      if (myChart2) {
+        myChart2.clear();
+      }
+      var myChart3 = this.$echarts.getInstanceByDom(
+        document.getElementById("myChart003")
+      );
+      if (myChart3) {
+        myChart3.clear();
+      }
+
       if ("2" == ck) {
         this.setTitle({ title: data[2], ck: ck });
         this.localflag = true;

@@ -15,7 +15,9 @@ import { Toast } from 'vant';
 import { Tab, Tabs } from 'vant';
 import { Loading } from 'vant';
 import { Icon } from 'vant';
+import { Tag } from 'vant';
 
+Vue.use(Tag);
 Vue.use(Icon).use(Loading).use(Tab).use(Tabs).use(Toast).use(NoticeBar).use(Button).use(Panel);
 Vue.use(Popup).use(Step).use(Steps).use(Divider).use(NavBar).use(Tabbar).use(TabbarItem);
 // 添加Fastclick移除移动端点击延迟
@@ -43,14 +45,19 @@ require('echarts/lib/chart/gauge');
 require('echarts/lib/chart/line');
 require('echarts/lib/chart/pie');
 // 引入提示框和标题组件
+require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
 require("echarts/lib/component/legend");
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$Toast = Toast;
 import fly from "./utils/fly";
-
+import api from "./utils/api";
+import areacode from "./utils/areacode";
+import itemname from "./utils/itemname";
 Vue.prototype.$fly = fly;
-
+Vue.prototype.$api = api;
+Vue.prototype.$itemname = itemname;
+Vue.prototype.$areacode = areacode;
 new Vue({
     router,
     store,

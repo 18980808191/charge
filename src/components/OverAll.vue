@@ -25,17 +25,17 @@
             :active="stepsactive1"
             direction="vertical"
           >
-            <van-step>计费出账准备</van-step>
-            <van-step>优惠</van-step>
-            <van-step>不下账处理</van-step>
+            <van-step>{{flowName1}}<van-tag type="success">{{flowValue1}}</van-tag></van-step>
+            <van-step>{{flowName2}}<van-tag type="success">{{flowValue2}}</van-tag></van-step>
+            <van-step>{{flowName3}}<van-tag type="success">{{flowValue3}}</van-tag></van-step>
           </van-steps>
           <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 15px' }"></van-divider>
           <van-steps
             :active="stepsactive2"
             direction="vertical"
           >
-            <van-step>账务出账准备</van-step>
-            <van-step>出账处理</van-step>
+            <van-step>{{flowName4}}<van-tag type="success">{{flowValue4}}</van-tag></van-step>
+            <van-step>{{flowName5}}<van-tag type="success">{{flowValue5}}</van-tag></van-step>
           </van-steps>
         </div>
         <div slot="footer">
@@ -61,9 +61,19 @@ export default {
       failtime:20,
       schedule02:undefined,
       popupshow: false,
-      stepsactive1: 0,
-      stepsactive2: 0,
-      regionName: ""
+      stepsactive1: -1,
+      stepsactive2: -1,
+      regionName: "",
+      flowValue1:"",
+      flowValue2:"",
+      flowValue3:"",
+      flowValue4:"",
+      flowValue5:"",
+      flowName1:"",
+      flowName2:"",
+      flowName3:"",
+      flowName4:"",
+      flowName5:""
     };
   },
   computed:{
@@ -74,15 +84,15 @@ export default {
       this.$router.push("/login");
     }else{
       var _this=this;
-      this.$fly.post('/schedule01')
+      this.$fly.post(this.$api.scheduleOverProvince)
       .then(function (response) {
-        if(response.success){
+        if(response.status==200){
           _this.schedule01=response.data;
         }
       });
-      this.$fly.post('/schedule02')
+      this.$fly.post(this.$api.scheduleLocalLan)
       .then(function (response) {
-        if(response.success){
+        if(response.status==200){
           _this.schedule02=response.data;
         }
       })
@@ -125,13 +135,14 @@ export default {
             name: "进度",
             type: "gauge",
             detail: { formatter: "{value}%" },
-            data: [{ value: rate.finishdata, name: "完成" }]
+            data: [{ value: rate, name: "完成" }]
           }
         ]
       };
       myChart.setOption(option, true);
     },
     drawchart02: function(ob) {
+     
       let tpob=[];
       for(let item of ob){
         let am=[item.regionId,item.schedule,item.regionName];
@@ -186,9 +197,30 @@ export default {
       });
     },
     popup: function(data) {
+      this.popupshow = false;
+      this.flowValue1="";
+      this.flowValue2="";
+      this.flowValue3="";
+      this.flowValue4="";
+      this.flowValue5="";
+      this.flowName1="";
+      this.flowName2="";
+      this.flowName3="";
+      this.flowName4="";
+      this.flowName5="";
       this.regionName = data[2];
-      this.stepsactive = 2;
-      this.popupshow = true;
+      var _this=this;
+      this.$fly.post(this.$api.scheduleLocalLanDetail,{localLan:data[0]})
+      .then(function (response) {
+        if(response.status==200){
+          for(var i=0;i<response.data.length;i++){
+            eval('_this.flowName'+(i-0+1)+'=response.data[i].flowName');
+            eval('_this.flowValue'+(i-0+1)+'=response.data[i].flowValue+"%";');
+          }
+          _this.popupshow = true;
+        }
+      })
+
     },
     shutdownpopup: function() {
       this.popupshow = false;

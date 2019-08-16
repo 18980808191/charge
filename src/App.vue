@@ -59,6 +59,7 @@ export default {
     ...mapState({
       title: "title", // 第一种写法
       ck: "ck",
+      regionId: "regionId",
       userId:"userId",
       userName: "userName",
       isProvincial:"isProvincial"
@@ -74,9 +75,12 @@ export default {
       //   }
       // }
       if (2 == this.ck && this.isProvincial) {
-        this.$refs.cp.redirectTolocal([0, 0, "全省"], 1);
+        this.$refs.cp.redirectTolocal([this.regionId, 0, "全省"], 1);
       }else{
-         alert("关闭");
+        var _this=this;
+         clplus.clAMS.backToPortal(function(error){
+           _this.$Toast.fail(error);
+         });
       }
     },
     watchroute(to,from) {
@@ -96,8 +100,8 @@ export default {
     }
   },
   created() {
-    if (this.userId == "") {
-      this.$router.push("/login");
+    if (this.userId == "" && this.$route.path!="/login" ) {
+      this.$router.push({path:"/login",query:{code:this.$route.query.code}});
     }
   },
   watch: {

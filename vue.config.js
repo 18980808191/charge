@@ -80,7 +80,16 @@ module.exports = {
       port: 8080,
       https: false,
       hotOnly: false,
-      proxy: '', // string | Object
+      proxy: {
+        '/': {
+            target: 'http://mpintf.paas.sc.ctc.com',
+            changeOrigin: true,
+            ws: false,
+            pathRewrite: {
+              '^/': ''
+            }
+        }
+    },
       before: app => {}
   },
   // 第三方插件的选项

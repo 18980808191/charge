@@ -12,18 +12,24 @@ fly.config.headers = { 'Content-Type': 'application/json' }
 
 //添加请求拦截器
 fly.interceptors.request.use((request) => {
+    Toast.loading({
+        duration: 0,       // 持续展示 toast
+        forbidClick: true, // 禁用背景点击
+        loadingType: 'spinner',
+        message: '加载中'
+      });
     request.headers = {
         "Content-Type": "application/x-www-form-urlencoded",
         "source": "sctelapp"
     }
-    if (request.url.indexOf("/login") == -1) {
+    if (request.url.indexOf("/auth") == -1) {
         // console.log(request.url)
         // console.log(store.state.userId)
-        // console.log(store.state.timeDiff)
+        // console.log(store.state.timediff)
         //给所有请求添加自定义header
         let userId = store.state.userId
         let timestamp = new Date().getTime();
-        let timediff = store.state.timeDiff
+        let timediff = store.state.timediff
         timestamp = Number(timestamp) + Number(timediff)
         request.body = request.body || {}
         request.body.userId = userId
@@ -39,6 +45,7 @@ fly.interceptors.request.use((request) => {
 //添加响应拦截器，响应拦截器会在then/catch处理之前执行
 fly.interceptors.response.use(
     (response) => {
+        Toast.clear();
         //只将请求结果的data字段返回
         if (typeof (response.data) == "string") {
             response.data = JSON.parse(response.data);
@@ -46,6 +53,7 @@ fly.interceptors.response.use(
         return response.data;
     },
     (err) => {
+        Toast.clear();
         //发生网络错误后会走到这里
         Toast.fail({
             duration: 0, // 持续展示 toast

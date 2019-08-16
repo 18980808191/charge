@@ -9,10 +9,11 @@ export default new Vuex.Store({
     ck: 1,
     userId:'',
     regionId:'',
+    localLan:'',
     regionName:'',
     isProvincial:true,
     userName:'',
-    timeDiff:''
+    timediff:''
   },
   mutations: {
     setTitle(state, ob) {
@@ -24,9 +25,14 @@ export default new Vuex.Store({
       state.regionName=ob.regionName;
       state.regionId=ob.regionId;
       state.userName=ob.userName;
-      state.timeDiff=ob.timeDiff;
+      state.timediff=ob.timediff;
       state.isProvincial=ob.isProvincial;
+    },
+    setLocalLan(state,ob){
+      state.localLan=ob.localLan;
+    
     }
+
   },
   actions: {
     setTitle(context, ob) {
@@ -34,6 +40,9 @@ export default new Vuex.Store({
     },
     setUserInfo(context, ob) {
       context.commit('setUserInfo', ob);
+    },
+    setLocalLan(context, ob) {
+      context.commit('setLocalLan', ob);
     },
   }
 })

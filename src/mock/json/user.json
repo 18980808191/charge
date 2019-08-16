@@ -2,9 +2,9 @@
     "data": {
         "userId": "18980808191",
         "userName":"王二小",
-        "regionId":"22234",
-        "regionName":"成都",
-        "timeDiff":"8888",
+        "regionId":"1000876",
+        "regionName":"攀枝花",
+        "timediff":"8888",
         "isProvincial":false
     },
     "message": "this is a message",
