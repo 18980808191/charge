@@ -156,7 +156,6 @@ export default {
       }
     },
     drawchart001: function(ob) {
-      console.log(ob);
       let months = [];
       let items = [];
       let sdatas = [];
