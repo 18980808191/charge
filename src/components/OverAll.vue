@@ -149,7 +149,7 @@ export default {
         tpob.unshift(am);       
       }
       tpob.unshift(['regionId','schedule','regionName']);
-      let myChart = this.$echarts.init(document.getElementById("myChart02"));
+      let myChart = this.$echarts.init(document.getElementById("myChart02"),{width:'70%'});
       let option = {
         title: {
           text: "本地网进度排名"

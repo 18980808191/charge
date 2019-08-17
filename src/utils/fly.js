@@ -9,15 +9,18 @@ var cryptoMD5 = require("crypto-js/hmac-md5");
 
 fly.config.baseURL = process.env.BASE_URL;
 fly.config.headers = { 'Content-Type': 'application/json' }
-
+var time=0;
 //添加请求拦截器
 fly.interceptors.request.use((request) => {
-    Toast.loading({
-        duration: 0,       // 持续展示 toast
-        forbidClick: true, // 禁用背景点击
-        loadingType: 'spinner',
-        message: '加载中'
-      });
+    if(time==0){
+        Toast.loading({
+            duration: 0,       // 持续展示 toast
+            forbidClick: true, // 禁用背景点击
+            loadingType: 'spinner',
+            message: '加载中'
+          });
+    }
+    time++;
     request.headers = {
         "Content-Type": "application/x-www-form-urlencoded",
         "source": "sctelapp"
@@ -45,7 +48,11 @@ fly.interceptors.request.use((request) => {
 //添加响应拦截器，响应拦截器会在then/catch处理之前执行
 fly.interceptors.response.use(
     (response) => {
-        Toast.clear();
+        time--;
+        if(time==0){
+            Toast.clear();
+        }
+        
         //只将请求结果的data字段返回
         if (typeof (response.data) == "string") {
             response.data = JSON.parse(response.data);

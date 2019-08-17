@@ -129,6 +129,7 @@ export default {
           localLan: this.localLan
         })
         .then(function(response) {
+          
           if (response.status == 200) {
             _this.dataop06 = response.data;
           }
@@ -253,7 +254,7 @@ export default {
         title: {
           text: "收入项",
           subtext: "（单位：万元）",
-          x: "center"
+          x: "left"
         },
         tooltip : {
         trigger: 'item',
@@ -262,7 +263,8 @@ export default {
     legend: {
         orient: 'vertical',
         left: 'left',
-        data: items
+        data: items,
+        top: 60
     },
     series : [
         {
@@ -342,7 +344,7 @@ export default {
         document.getElementById("myChart003")
       );
       if (!myChart) {
-        myChart = this.$echarts.init(document.getElementById("myChart003"));
+        myChart = this.$echarts.init(document.getElementById("myChart003"),{width:"70%"});
       }
       myChart.resize({ height: this.heightchart3 + "px" });
       myChart.clear();
@@ -597,7 +599,7 @@ export default {
       //重新渲染
     },
     tabchange(name, title) {
-      this.$parent.$refs.cpv.scrollTop = this.$parent.$refs.cpv.scrollHeight;
+      this.$parent.$refs.cpv.scrollTop = 340;
       this.func("this.dataop05", "this.drawchart005", "this.dataop05");
       this.func("this.dataop06", "this.drawchart006", "this.dataop06");
     }

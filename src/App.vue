@@ -52,7 +52,7 @@ export default {
   mounted() {
     var h = document.documentElement.clientHeight || document.body.clientHeight;
     this.mg = this.$refs.navbar.offsetHeight;
-    this.mt = this.$refs.bottombar.$el.offsetHeight;
+    this.mt = this.$refs.bottombar.$el.offsetHeight==0?50:his.$refs.bottombar.$el.offsetHeight;
     this.ht = h - this.mg - this.mt;
   },
   computed: {
