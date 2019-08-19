@@ -178,7 +178,6 @@ export default {
         sdatas.push({
           name: ob[i].item,
           type: "line",
-          stack: "总量",
           data: cc,
           lineStyle: {
             width: 3 //设置线条粗细
@@ -363,7 +362,8 @@ export default {
       }
       let option = {
         title: {
-          text: "近三个月收入趋势图"
+          text: "近三个月收入趋势图",
+          subtext: "（单位：万元）"
         },
         tooltip: {
           trigger: "axis"
@@ -386,7 +386,6 @@ export default {
           {
             name: "收入",
             type: "line",
-            stack: "总量",
             data: cc,
             lineStyle: {
               width: 3 //设置线条粗细
@@ -426,7 +425,6 @@ export default {
             sdatas.push({
               name: aa.month,
               type: "line",
-              stack: "清单收入",
               data: cc,
               lineStyle: {
                 width: 3 //设置线条粗细
@@ -467,7 +465,8 @@ export default {
         yAxis: {
           type: "value"
         },
-        series: sdatas
+        series: sdatas,
+        color: ["#007ACC","#C43D39"]
       };
       var myChart = this.$echarts.getInstanceByDom(
         document.getElementById("myChart002")
@@ -501,7 +500,6 @@ export default {
             sdatas.push({
               name: aa.month,
               type: "line",
-              stack: "话务量",
               data: cc,
               lineStyle: {
                 width: 3 //设置线条粗细
@@ -543,7 +541,8 @@ export default {
         yAxis: {
           type: "value"
         },
-        series: sdatas
+        series: sdatas,
+        color: ["#007ACC","#C43D39"]
       };
       var myChart = this.$echarts.getInstanceByDom(
         document.getElementById("myChart003")

@@ -108,6 +108,16 @@ export default {
   },
   methods: {
     ...mapActions(["setTitle"]),
+    getLastMonth(){
+    var date = new Date; 
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    if(month == 0){
+         year = year -1;
+         month = 12; 
+    }
+    return year+"年"+month+"月";
+},
     func(a,b,c){
       var _this=this;
       var abc=eval(a);
@@ -128,7 +138,7 @@ export default {
           formatter: "{a} <br/>{b} : {c}%"
         },
         title: {
-          text: "出账总体进度"
+          text: this.getLastMonth()+"出账总进度",
         },
         series: [
           {
