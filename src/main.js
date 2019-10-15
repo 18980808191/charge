@@ -16,10 +16,10 @@ import { Tab, Tabs } from 'vant';
 import { Loading } from 'vant';
 import { Icon } from 'vant';
 import { Tag } from 'vant';
-
-Vue.use(Tag);
+import {Collapse, CollapseItem,Row,Col} from 'vant';
+Vue.use(Tag).use(Row).use(Col);;
 Vue.use(Icon).use(Loading).use(Tab).use(Tabs).use(Toast).use(NoticeBar).use(Button).use(Panel);
-Vue.use(Popup).use(Step).use(Steps).use(Divider).use(NavBar).use(Tabbar).use(TabbarItem);
+Vue.use(Popup).use(Step).use(Steps).use(Divider).use(NavBar).use(Tabbar).use(TabbarItem).use(Collapse).use(CollapseItem);
 // 添加Fastclick移除移动端点击延迟
 import FastClick from 'fastclick'
 //FastClick的ios点击穿透解决方案

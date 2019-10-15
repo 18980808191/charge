@@ -7,6 +7,7 @@ const api={
     scheduleOverProvince:baseUrl+"/schedule/overProvince",
     scheduleLocalLan:baseUrl+"/schedule/localLan",
     scheduleLocalLanDetail:baseUrl+"/schedule/localLanDetail",
+    scheduleLocalLanPetriStep:baseUrl+"/schedule/localLanPetriStep",
 
     incomeThis:baseUrl+"/income/this",
     incomeProvinceThreeMonth:baseUrl+"/income/provinceThreeMonth",

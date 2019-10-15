@@ -1,49 +1,31 @@
 <template>
   <div>
-    <div
-      id="myChart01"
-      :style="{width: '100%', height: '300px'}"
-    ></div>
+    <div id="myChart01" :style="{width: '100%', height: '300px'}"></div>
     <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 15px' }"></van-divider>
-    <div
-      id="myChart02"
-      :style="{width: '100%', height: '600px'}"
-    ></div>
-    <van-popup
-      v-model="popupshow"
-      :overlay="false"
-      position="right"
-      :style="{marginBottom:'50px' }"
-    >
-      <van-panel
-        :title="regionName"
-        status="状态"
-        style="border:1px solid green;"
-      >
+
+    <van-collapse v-model="activeNames" @change="collapsechange" accordion>
+      <van-collapse-item v-for="(item,index) in schedulelist" :key="index" :title="item.regionName" :name="item.regionId" icon="location-o" :value="(item.schedule==null||item.schedule=='')?'0%':(item.schedule+'%')">
+        <van-col span="8" v-for="(it,ix) in flowlist" :key="ix">
+          <div :style="{textAlign:'center',lineHeight:'35px',height:'35px',fontSize:'12px',color:'#ffffff',background:it.flowValue==100?'#07C160':'#FF976A',margin:'10px'}" size="large" @click.stop="flowdetail(item.regionId,it.flowId,item.regionName,it.flowName)">{{it.flowName}}{{(it.flowValue==null||it.flowValue=='')?'0':it.flowValue}}%</div>
+        </van-col>
+      </van-collapse-item>
+    </van-collapse>
+
+    <van-popup v-model="popupshow" position="right" :style="{marginBottom:'50px',width:'206px' }">
+      <van-panel :title="paneltitle" :status="panelstatus">
         <div>
-          <van-steps
-            :active="stepsactive1"
-            direction="vertical"
-          >
-            <van-step>{{flowName1}}<van-tag type="success">{{flowValue1}}</van-tag></van-step>
-            <van-step>{{flowName2}}<van-tag type="success">{{flowValue2}}</van-tag></van-step>
-            <van-step>{{flowName3}}<van-tag type="success">{{flowValue3}}</van-tag></van-step>
-          </van-steps>
-          <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 15px' }"></van-divider>
-          <van-steps
-            :active="stepsactive2"
-            direction="vertical"
-          >
-            <van-step>{{flowName4}}<van-tag type="success">{{flowValue4}}</van-tag></van-step>
-            <van-step>{{flowName5}}<van-tag type="success">{{flowValue5}}</van-tag></van-step>
-          </van-steps>
+          <van-row v-for="(item,index) in steplist" :key="index" style="border-bottom:1px solid #969799;padding-top:10px;">
+            <van-col span="8" offset="4">
+              <van-icon name="clock-o" />{{item.startDate}}</van-col>
+            <van-col span="8">
+              <van-icon name="clock-o" />{{item.startDate}}</van-col>
+            <van-col span="20" offset="2">
+              <div :style="{color:'#ffffff',background:item.value==100?'#07C160':'#FF976A',margin:'10px',height:'30px',lineHeight:'30px',textAlign:'center'}">{{item.name}}{{(item.value==null||item.value=='')?'0':item.value}}%</div>
+            </van-col>
+          </van-row>
         </div>
         <div slot="footer">
-          <van-button
-            size="small"
-            type="danger"
-            @click="shutdownpopup"
-          >关闭</van-button>
+          <van-button size="small" type="info" @click="shutdownpopup">关闭</van-button>
         </div>
       </van-panel>
     </van-popup>
@@ -52,50 +34,40 @@
 
 <script>
 //import {mapGetters,mapState,mapActions} from 'vuex';
-import { mapState,mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "OverAll",
   data() {
     return {
-      schedule01:undefined,
-      failtime:20,
-      schedule02:undefined,
+      schedule01: undefined,
+      schedulelist: [],
+      steplist: [],
+      flowlist: [],
+      activeNames: [],
+      failtime: 20,
       popupshow: false,
-      stepsactive1: -1,
-      stepsactive2: -1,
-      regionName: "",
-      flowValue1:"",
-      flowValue2:"",
-      flowValue3:"",
-      flowValue4:"",
-      flowValue5:"",
-      flowName1:"",
-      flowName2:"",
-      flowName3:"",
-      flowName4:"",
-      flowName5:""
+      paneltitle: "",
+      panelstatus: ""
     };
   },
-  computed:{
+  computed: {
     ...mapState(["userId"])
   },
-  created(){
+  created() {
     if (this.userId == "") {
       this.$router.push("/login");
-    }else{
-      var _this=this;
-      this.$fly.post(this.$api.scheduleOverProvince)
-      .then(function (response) {
-        if(response.status==200){
-          _this.schedule01=response.data;
+    } else {
+      var _this = this;
+      this.$fly.post(this.$api.scheduleOverProvince).then(function(response) {
+        if (response.status == 200) {
+          _this.schedule01 = response.data;
         }
       });
-      this.$fly.post(this.$api.scheduleLocalLan)
-      .then(function (response) {
-        if(response.status==200){
-          _this.schedule02=response.data;
+      this.$fly.post(this.$api.scheduleLocalLan).then(function(response) {
+        if (response.status == 200) {
+          _this.schedulelist = response.data;
         }
-      })
+      });
     }
   },
   mounted() {
@@ -103,42 +75,87 @@ export default {
       return;
     }
     this.setTitle({ title: "进度", ck: "1" });
-    this.func('this.schedule01',"this.drawchart01",'this.schedule01');
-    this.func('this.schedule02',"this.drawchart02",'this.schedule02');
+    this.func("this.schedule01", "this.drawchart01", "this.schedule01");
   },
   methods: {
     ...mapActions(["setTitle"]),
-    getLastMonth(){
-    var date = new Date; 
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    if(month == 0){
-         year = year -1;
-         month = 12; 
-    }
-    return year+"年"+month+"月";
-},
-    func(a,b,c){
-      var _this=this;
-      var abc=eval(a);
-      if(!eval(a)){
-        if(_this.failtime>0){
-          setTimeout(function(){_this.func(a,b,c)}, 300);
-          _this.failtime--;
-        }
-        
-      }else{
-        eval(b+"("+c+");");
+    collapsechange(e) {
+      this.flowlist = [];
+      if (e) {
+        var _this = this;
+        this.$fly
+          .post(this.$api.scheduleLocalLanDetail, { localLan: e })
+          .then(function(response) {
+            if (response.status == 200) {
+              _this.flowlist = response.data;
+            }
+          });
       }
     },
-    drawchart01(rate){
+    flowdetail(regionId, flowId, regionName, flowName) {
+      this.paneltitle = regionName;
+      this.panelstatus = flowName;
+      let monthId = this.getLastMonthId();
+      var _this = this;
+      this.$fly
+        .post(this.$api.scheduleLocalLanPetriStep, {
+          localLan: regionId,
+          flowId: flowId,
+          monthId: monthId
+        })
+        .then(function(response) {
+          if (response.status == 200) {
+            _this.steplist = response.data;
+            _this.popupshow = true;
+          }
+        });
+    },
+    getLastMonth() {
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      if (month == 0) {
+        year = year - 1;
+        month = 12;
+      }
+      return year + "年" + month + "月";
+    },
+    getLastMonthId() {
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      if (month == 0) {
+        year = year - 1;
+        month = 12;
+      }
+      if (month < 10) {
+        month = "0" + month;
+      }
+
+      return "1" + String(year).substr(2, 2) + month;
+    },
+    func(a, b, c) {
+      var _this = this;
+      var abc = eval(a);
+      if (!eval(a)) {
+        if (_this.failtime > 0) {
+          setTimeout(function() {
+            _this.func(a, b, c);
+          }, 300);
+          _this.failtime--;
+        }
+      } else {
+        eval(b + "(" + c + ");");
+      }
+    },
+    drawchart01(rate) {
       let myChart = this.$echarts.init(document.getElementById("myChart01"));
       let option = {
         tooltip: {
           formatter: "{a} <br/>{b} : {c}%"
         },
         title: {
-          text: this.getLastMonth()+"出账总进度",
+          text: this.getLastMonth() + "出账总进度"
         },
         series: [
           {
@@ -150,87 +167,6 @@ export default {
         ]
       };
       myChart.setOption(option, true);
-    },
-    drawchart02: function(ob) {
-     
-      let tpob=[];
-      for(let item of ob){
-        let am=[item.regionId,item.schedule,item.regionName];
-        tpob.unshift(am);       
-      }
-      tpob.unshift(['regionId','schedule','regionName']);
-      let myChart = this.$echarts.init(document.getElementById("myChart02"),{width:'70%'});
-      let option = {
-        title: {
-          text: "本地网进度排名"
-        },
-        dataset: {
-          source: tpob
-        },
-        grid: { containLabel: true },
-        xAxis: { name: "amount" },
-        yAxis: { type: "category" },
-        series: [
-          {
-            type: "bar",
-            encode: {
-              // Map the "amount" column to X axis.
-              x: "schedule",
-              // Map the "product" column to Y axis
-              y: "regionName"
-            },
-            itemStyle: {
-              normal: {
-                label: {
-                  show: true,
-                  position: "right",
-                  formatter: function(value) {
-                    return value.data[1] + "%";
-                  },
-                  textStyle: {
-                    fontSize: 12,
-                    color: "#000",
-                    fontWeight: 600,
-                    fontFamily: "Microsoft YaHei"
-                  }
-                }
-              }
-            }
-          }
-        ]
-      };
-
-      myChart.setOption(option, true);
-      let _this = this;
-      myChart.on("click", function(param) {
-        _this.popup(param.data);
-      });
-    },
-    popup: function(data) {
-      this.popupshow = false;
-      this.flowValue1="";
-      this.flowValue2="";
-      this.flowValue3="";
-      this.flowValue4="";
-      this.flowValue5="";
-      this.flowName1="";
-      this.flowName2="";
-      this.flowName3="";
-      this.flowName4="";
-      this.flowName5="";
-      this.regionName = data[2];
-      var _this=this;
-      this.$fly.post(this.$api.scheduleLocalLanDetail,{localLan:data[0]})
-      .then(function (response) {
-        if(response.status==200){
-          for(var i=0;i<response.data.length;i++){
-            eval('_this.flowName'+(i-0+1)+'=response.data[i].flowName');
-            eval('_this.flowValue'+(i-0+1)+'=response.data[i].flowValue+"%";');
-          }
-          _this.popupshow = true;
-        }
-      })
-
     },
     shutdownpopup: function() {
       this.popupshow = false;

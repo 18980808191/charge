@@ -63,7 +63,7 @@ fly.interceptors.response.use(
         Toast.clear();
         //发生网络错误后会走到这里
         Toast.fail({
-            duration: 0, // 持续展示 toast
+            duration: 3000, // 持续展示 toast
             forbidClick: true, // 禁用背景点击
             message: "请求出错了，联系管理员！"
         });
